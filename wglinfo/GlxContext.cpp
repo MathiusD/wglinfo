@@ -273,7 +273,7 @@ void GlxContext::PrintGpuMemoryInfo()
   BaseGlContext::PrintGpuMemoryInfo();
 
   // Mesa implements other extensions - no need to use GLX_MESA_query_renderer here
-  /*Display*    aDisp    = (Display*)myWin.GetDisplay();
+  Display*    aDisp    = (Display*)myWin.GetDisplay();
   const int   aScreen  = DefaultScreen(aDisp);
   const char* aGlxExts = glXQueryExtensionsString(aDisp, aScreen);
 
@@ -285,7 +285,7 @@ void GlxContext::PrintGpuMemoryInfo()
     unsigned int aVideoMemoryMB = 0;
     aQueryMESAProc(GLX_RENDERER_VIDEO_MEMORY_MESA, &aVideoMemoryMB);
     std::cout << Prefix() << "Mesa GPU memory: " << aVideoMemoryMB << " MiB\n";
-  }*/
+  }
 }
 
 void GlxContext::PrintVisuals(bool theIsVerbose)
