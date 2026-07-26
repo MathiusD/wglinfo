@@ -522,7 +522,7 @@ void GlxContext::PrintAdditionalInfos()
           {
             GLuint amdMemory = 0;
             int memResult = aGetGPUInfoAMD(id, 0x21A3 /* GLX_GPU_RAM_AMD */, GL_UNSIGNED_INT, sizeof(amdMemory), &amdMemory);
-            bool memFailed = memResult > 0;
+            bool memFailed = memResult <= 0;
             if (!memFailed)
             {
               std::cout << " * " << amdMemory << " MiB\n";
@@ -535,7 +535,7 @@ void GlxContext::PrintAdditionalInfos()
           {
             GLuint amdClock = 0;
             int clockResult = aGetGPUInfoAMD(id, 0x21A3 /* GLX_GPU_CLOCK_AMD */, GL_UNSIGNED_INT, sizeof(amdClock), &amdClock);
-            bool clockFailed = clockResult > 0;
+            bool clockFailed = clockResult <= 0;
             if (!clockFailed)
             {
               std::cout << " * " << amdClock << " Mhz\n";
@@ -548,7 +548,7 @@ void GlxContext::PrintAdditionalInfos()
           {
             GLuint amdPipes = 0;
             int pipesResult = aGetGPUInfoAMD(id, 0x21A5 /* GLX_GPU_NUM_PIPES_AMD */, GL_UNSIGNED_INT, sizeof(amdPipes), &amdPipes);
-            bool pipesFailed = pipesResult > 0;
+            bool pipesFailed = pipesResult <= 0;
             if (!pipesFailed)
             {
               std::cout << " * " << amdPipes << " 3D pipes\n";
@@ -561,7 +561,7 @@ void GlxContext::PrintAdditionalInfos()
           {
             GLuint amdNumSimd = 0;
             int numSimdResult = aGetGPUInfoAMD(id, 0x21A6 /* GLX_GPU_NUM_SIMD_AMD */, GL_UNSIGNED_INT, sizeof(amdNumSimd), &amdNumSimd);
-            bool numSimdFailed = numSimdResult > 0;
+            bool numSimdFailed = numSimdResult <= 0;
             if (!numSimdFailed)
             {
               std::cout << " * " << amdNumSimd << " SIMD ALU units in each shader pipes\n";
@@ -574,7 +574,7 @@ void GlxContext::PrintAdditionalInfos()
           {
             GLuint amdNumRB = 0;
             int numRBResult = aGetGPUInfoAMD(id, 0x21A7 /* GLX_GPU_NUM_RB_AMD */, GL_UNSIGNED_INT, sizeof(amdNumRB), &amdNumRB);
-            bool numRBFailed = numRBResult > 0;
+            bool numRBFailed = numRBResult <= 0;
             if (!numRBFailed)
             {
               std::cout << " * " << amdNumRB << " render backends\n";
@@ -587,7 +587,7 @@ void GlxContext::PrintAdditionalInfos()
           {
             GLuint amdNumSPI = 0;
             int numSPIResult = aGetGPUInfoAMD(id, 0x21A8 /* GLX_GPU_NUM_SPI_AMD */, GL_UNSIGNED_INT, sizeof(amdNumSPI), &amdNumSPI);
-            bool numSPIFailed = numSPIResult > 0;
+            bool numSPIFailed = numSPIResult <= 0;
             if (!numSPIFailed)
             {
               std::cout << " * " << amdNumSPI << " shader parameter interpolaters\n";
