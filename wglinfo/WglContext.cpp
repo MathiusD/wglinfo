@@ -677,7 +677,6 @@ void WglContext::PrintAdditionalInfos()
       wglGetGPUInfoAMD_t aGetGPUInfoAMD = NULL;
       if (FindProc("wglGetGPUInfoAMD", aGetGPUInfoAMD)) {
         std::cout << Prefix() << "WGL_AMD_gpu_association supported & wglGetGPUInfoAMD proc found\n";
-        // TODO mfery check
         // if (count >= 1) {
         //   {
         //     int arraySize = count;
@@ -755,74 +754,80 @@ void WglContext::PrintAdditionalInfos()
           // }
           {
             GLuint amdMemory = 0;
-            bool memFailed = aGetGPUInfoAMD(id, 0x21A3 /* WGL_GPU_RAM_AMD */, GL_UNSIGNED_INT, sizeof(amdMemory), &amdMemory) > 0;
+            int memResult = aGetGPUInfoAMD(id, 0x21A3 /* WGL_GPU_RAM_AMD */, GL_UNSIGNED_INT, sizeof(amdMemory), &amdMemory);
+            bool memFailed = memResult > 0;
             if (!memFailed)
             {
               std::cout << " * " << amdMemory << " MiB\n";
             }
             else
             {
-              std::cout << " * " << "Unable to retrieve memory\n";
+              std::cout << " * " << "Unable to retrieve memory (result:" << memResult << ")\n";
             }
           }
           {
             GLuint amdClock = 0;
-            bool clockFailed = aGetGPUInfoAMD(id, 0x21A3 /* WGL_GPU_CLOCK_AMD */, GL_UNSIGNED_INT, sizeof(amdClock), &amdClock) > 0;
+            int clockResult = aGetGPUInfoAMD(id, 0x21A3 /* WGL_GPU_CLOCK_AMD */, GL_UNSIGNED_INT, sizeof(amdClock), &amdClock);
+            bool clockFailed = clockResult > 0;
             if (!clockFailed)
             {
               std::cout << " * " << amdClock << " Mhz\n";
             }
             else
             {
-              std::cout << " * " << "Unable to retrieve clock frequency\n";
+              std::cout << " * " << "Unable to retrieve clock frequency (result:" << clockResult << ")\n";
             }
           }
           {
             GLuint amdPipes = 0;
-            bool pipesFailed = aGetGPUInfoAMD(id, 0x21A5 /* WGL_GPU_NUM_PIPES_AMD */, GL_UNSIGNED_INT, sizeof(amdPipes), &amdPipes) > 0;
+            int pipesResult = aGetGPUInfoAMD(id, 0x21A5 /* WGL_GPU_NUM_PIPES_AMD */, GL_UNSIGNED_INT, sizeof(amdPipes), &amdPipes);
+            bool pipesFailed = pipesResult > 0;
             if (!pipesFailed)
             {
               std::cout << " * " << amdPipes << " 3D pipes\n";
             }
             else
             {
-              std::cout << " * " << "Unable to retrieve number of 3D pipes\n";
+              std::cout << " * " << "Unable to retrieve number of 3D pipes (result:" << pipesResult << ")\n";
             }
           }
           {
             GLuint amdNumSimd = 0;
-            bool numSimdFailed = aGetGPUInfoAMD(id, 0x21A6 /* WGL_GPU_NUM_SIMD_AMD */, GL_UNSIGNED_INT, sizeof(amdNumSimd), &amdNumSimd) > 0;
+            int numSimdResult = aGetGPUInfoAMD(id, 0x21A6 /* WGL_GPU_NUM_SIMD_AMD */, GL_UNSIGNED_INT, sizeof(amdNumSimd), &amdNumSimd);
+            bool numSimdFailed = numSimdResult > 0;
             if (!numSimdFailed)
             {
               std::cout << " * " << amdNumSimd << " SIMD ALU units in each shader pipes\n";
             }
             else
             {
-              std::cout << " * " << "Unable to retrieve number of SIMD ALU units in each shader pipes\n";
+              std::cout << " * " << "Unable to retrieve number of SIMD ALU units in each shader pipes (result:" << numSimdResult << ")\n";
             }
           }
           {
             GLuint amdNumRB = 0;
-            bool numRBFailed = aGetGPUInfoAMD(id, 0x21A7 /* WGL_GPU_NUM_RB_AMD */, GL_UNSIGNED_INT, sizeof(amdNumRB), &amdNumRB) > 0;
+            int numRBResult = aGetGPUInfoAMD(id, 0x21A7 /* WGL_GPU_NUM_RB_AMD */, GL_UNSIGNED_INT, sizeof(amdNumRB), &amdNumRB);
+            bool numRBFailed = numRBResult > 0;
             if (!numRBFailed)
             {
               std::cout << " * " << amdNumRB << " render backends\n";
             }
             else
             {
-              std::cout << " * " << "Unable to retrieve number of render backends\n";
+              std::cout << " * " << "Unable to retrieve number of render backends (result:" << numRBResult << ")\n";
             }
           }
           {
             GLuint amdNumSPI = 0;
-            bool numSPIFailed = aGetGPUInfoAMD(id, 0x21A8 /* WGL_GPU_NUM_SPI_AMD */, GL_UNSIGNED_INT, sizeof(amdNumSPI), &amdNumSPI) > 0;
+            int numSpiResult = aGetGPUInfoAMD(id, 0x21A8 /* WGL_GPU_NUM_SPI_AMD */, GL_UNSIGNED_INT, sizeof(amdNumSPI), &amdNumSPI);
+            bool numSPIFailed = numSpiResult > 0;
             if (!numSPIFailed)
             {
               std::cout << " * " << amdNumSPI << " shader parameter interpolaters\n";
             }
             else
             {
-              std::cout << " * " << "Unable to retrieve number of shader parameter interpolaters\n";
+              std::cout << " * " << "Unable to retrieve number of shader parameter interpolaters (result:" << numSpiResult << ")\n";
             }
           }
           std::cout << "\n";
