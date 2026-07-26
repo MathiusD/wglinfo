@@ -43,6 +43,8 @@ public:
   //! Print information about visuals.
   virtual void PrintVisuals(bool theIsVerbose) override;
 
+  virtual void PrintAdditionalInfos() override;
+
 public:
 
   //! glGetError() wrapper.

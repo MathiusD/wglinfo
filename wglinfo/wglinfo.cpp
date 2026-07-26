@@ -86,6 +86,7 @@ private:
   bool myToPrintExtensions = true;
   bool myToPrintLimits = true;
   bool myToPrintVisuals = true;
+  bool myToPrintAdditionalInfos = true;
 
   int myExitCode = 1;
 };
@@ -219,6 +220,14 @@ bool WglInfo::parseArguments(int theNbArgs, const char** theArgVec)
     else if (anArg == "--visuals" || anArg == "-visuals")
     {
       suppressInfoBut(myToPrintVisuals);
+    }
+    else if (anArg == "--noadditionals" || anArg == "-noadditionals" )
+    {
+      myToPrintAdditionalInfos = false;
+    }
+    else if (anArg == "--additionals" || anArg == "-additionals")
+    {
+      suppressInfoBut(myToPrintAdditionalInfos);
     }
     else if (anArg == "--gpumemory" || anArg == "-gpumemory"
           || anArg == "--gpumem" || anArg == "-gpumem")
@@ -414,22 +423,23 @@ void WglInfo::printHelp(const char* theName, bool theIsVersion)
       "Usage: " << aName << " [-v] [-h] [--platform {" << aPlatforms << "}]=*\n"
       "               [--api {GL|GLES}]=* [--profile {core|compat|soft}]=*\n"
       "               [--first] [--gpumemory]\n"
-      "               [--novisuals] [--noextensions] [--norenderer] [--noplatform]\n"
-      "  -B             Brief output, print only the basics.\n"
-      "  -v             Print visuals info in verbose form.\n"
-      "  -h             This information.\n"
-      "  --platform     Platform (" << aPlatforms << ") to create context;\n"
-      "                 by default main platforms will be evaluated.\n"
-      "  --api          Api (OpenGL or OpenGL ES) to create context;\n"
-      "                 by default all available APIs will be evaluated.\n"
-      "  --profile      Profile to create OpenGL context;\n"
-      "                 by default several main profiles will be evaluated.\n"
-      "  --first        Print only first context.\n"
-      "  --gpumemory    Print only GPU memory info (suppresses all other info).\n"
-      "  --noplatform   Do not print platform (EGL|WGL|GLX|CGL etc.) info.\n"
-      "  --norenderer   Do not print renderer info.\n"
-      "  --noextensions Do not list extensions.\n"
-      "  --novisuals    Do not list visuals, same as -B.\n";
+      "               [--novisuals] [--noextensions] [--norenderer] [--noplatform] [--noadditionals]\n"
+      "  -B              Brief output, print only the basics.\n"
+      "  -v              Print visuals info in verbose form.\n"
+      "  -h              This information.\n"
+      "  --platform      Platform (" << aPlatforms << ") to create context;\n"
+      "                  by default main platforms will be evaluated.\n"
+      "  --api           Api (OpenGL or OpenGL ES) to create context;\n"
+      "                  by default all available APIs will be evaluated.\n"
+      "  --profile       Profile to create OpenGL context;\n"
+      "                  by default several main profiles will be evaluated.\n"
+      "  --first         Print only first context.\n"
+      "  --gpumemory     Print only GPU memory info (suppresses all other info).\n"
+      "  --noplatform    Do not print platform (EGL|WGL|GLX|CGL etc.) info.\n"
+      "  --norenderer    Do not print renderer info.\n"
+      "  --noextensions  Do not list extensions.\n"
+      "  --novisuals     Do not list visuals, same as -B.\n"
+      "  --noadditionals Do not list additionals infos, same as -B.\n";
     }
 
     std::cout << "This wglinfo tool variation has been created by Kirill Gavrilov Tartynskih <kirill@sview.ru>\n";
@@ -483,6 +493,9 @@ std::vector<BaseGlContext::ContextBits> WglInfo::printWglInfo()
 
     if (myToPrintLimits)
       aCtx.PrintLimits();
+
+    if (myToPrintAdditionalInfos)
+      aCtx.PrintAdditionalInfos();
 
     if (myIsFirstOnly)
       return aSucceeded;

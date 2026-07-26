@@ -286,33 +286,6 @@ void GlxContext::PrintGpuMemoryInfo()
     aQueryMESAProc(GLX_RENDERER_VIDEO_MEMORY_MESA, &aVideoMemoryMB);
     std::cout << Prefix() << "Mesa GPU memory: " << aVideoMemoryMB << " MiB\n";
   }
-
-  typedef unsigned int (*glXGetGPUIDsAMD_t) (unsigned int maxCount, unsigned int *ids);
-  glXGetGPUIDsAMD_t aGetGPUIDsAMDProc = NULL;
-  if (hasExtension(aGlxExts, "GLX_AMD_gpu_association")
-   && FindProc("glXGetGPUIDsAMD", aGetGPUIDsAMDProc))
-  {
-    std::cout << Prefix() << "GLX_AMD_gpu_association supported & glXGetGPUIDsAMD proc found\n";
-    unsigned int gpuCount = aGetGPUIDsAMDProc(0, NULL);
-    if (gpuCount == 0)
-    {
-      std::cout << Prefix() << "Error occured during fetch of GPU count by AMD_gpu_association\n";
-    }
-    else
-    {
-      std::cout << Prefix() << "GPU count reported by AMD_gpu_association: " << gpuCount << " (Related ids : ";
-      unsigned int* ids = new unsigned int[gpuCount];
-      int count = aGetGPUIDsAMDProc(gpuCount, ids);
-      for (int i = 0; i < count; i++) {
-        if (i > 0) {
-          std::cout << ", ";
-        }
-        unsigned int id = ids[i];
-        std::cout << id;
-      }
-      std::cout << ")\n";
-    }
-  }
 }
 
 void GlxContext::PrintVisuals(bool theIsVerbose)
@@ -432,6 +405,42 @@ void GlxContext::PrintVisuals(bool theIsVerbose)
 
   if (!theIsVerbose)
     VisualInfo::PrintTableHeader(false);
+}
+
+void GlxContext::PrintAdditionalInfos()
+{
+  BaseGlContext::PrintAdditionalInfos();
+
+  Display*    aDisp    = (Display*)myWin.GetDisplay();
+  const int   aScreen  = DefaultScreen(aDisp);
+  const char* aGlxExts = glXQueryExtensionsString(aDisp, aScreen);
+
+  typedef unsigned int (*glXGetGPUIDsAMD_t) (unsigned int maxCount, unsigned int *ids);
+  glXGetGPUIDsAMD_t aGetGPUIDsAMDProc = NULL;
+  if (hasExtension(aGlxExts, "GLX_AMD_gpu_association")
+   && FindProc("glXGetGPUIDsAMD", aGetGPUIDsAMDProc))
+  {
+    std::cout << Prefix() << "GLX_AMD_gpu_association supported & glXGetGPUIDsAMD proc found\n";
+    unsigned int gpuCount = aGetGPUIDsAMDProc(0, NULL);
+    if (gpuCount == 0)
+    {
+      std::cout << Prefix() << "Error occured during fetch of GPU count by AMD_gpu_association\n";
+    }
+    else
+    {
+      std::cout << Prefix() << "GPU count reported by AMD_gpu_association: " << gpuCount << " (Related ids : ";
+      unsigned int* ids = new unsigned int[gpuCount];
+      int count = aGetGPUIDsAMDProc(gpuCount, ids);
+      for (int i = 0; i < count; i++) {
+        if (i > 0) {
+          std::cout << ", ";
+        }
+        unsigned int id = ids[i];
+        std::cout << id;
+      }
+      std::cout << ")\n";
+    }
+  }
 }
 
 #endif

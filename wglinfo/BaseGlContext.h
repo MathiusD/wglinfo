@@ -79,6 +79,9 @@ public:
   //! Print all visuals.
   virtual void PrintVisuals(bool theIsVerbose) = 0;
 
+  //! Print all additional infos
+  virtual void PrintAdditionalInfos();
+
 public:
 
   //! Auxiliary template to retrieve GL function pointer.

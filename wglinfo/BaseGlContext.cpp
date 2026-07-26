@@ -519,3 +519,9 @@ void BaseGlContext::PrintLimits()
 
   std::cout << aStr.str() << std::endl;
 }
+
+
+void BaseGlContext::PrintAdditionalInfos()
+{
+  
+}
