@@ -213,7 +213,12 @@ bool WglInfo::parseArguments(int theNbArgs, const char** theArgVec)
     {
       suppressInfoBut(myToPrintLimits);
     }
-    else if (anArg == "--novisuals" || anArg == "-novisuals" ||  anArg == "-b")
+    else if (anArg == "-b")
+    {
+      myToPrintVisuals = false;
+      myToPrintAdditionalInfos = false;
+    }
+    else if (anArg == "--novisuals" || anArg == "-novisuals")
     {
       myToPrintVisuals = false;
     }
@@ -221,7 +226,7 @@ bool WglInfo::parseArguments(int theNbArgs, const char** theArgVec)
     {
       suppressInfoBut(myToPrintVisuals);
     }
-    else if (anArg == "--noadditionals" || anArg == "-noadditionals" )
+    else if (anArg == "--noadditionals" || anArg == "-noadditionals")
     {
       myToPrintAdditionalInfos = false;
     }
