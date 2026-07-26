@@ -830,6 +830,14 @@ void WglContext::PrintAdditionalInfos()
         }
       }
     }
+
+    typedef UINT(WINAPI *wglGetContextGPUIDAMD_t)(HGLRC theHglrc);
+    wglGetContextGPUIDAMD_t aGetContextGPUIDAMD = NULL;
+    if (FindProc("wglGetContextGPUIDAMD", aGetContextGPUIDAMD)) {
+      std::cout << Prefix() << "WGL_AMD_gpu_association supported & wglGetContextGPUIDAMD proc found\n";
+      UINT currentAmdId = aGetContextGPUIDAMD((HGLRC)myRendCtx);
+      std::cout << Prefix() << "GPU ID for WGL_AMD_gpu_association for current context : " << currentAmdId << "\n";
+    }
   }
 }
 

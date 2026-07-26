@@ -597,6 +597,14 @@ void GlxContext::PrintAdditionalInfos()
         }
       }
     }
+
+    typedef unsigned int (*glXGetContextGPUIDAMD_t)(GLXContext ctx);
+    glXGetContextGPUIDAMD_t aGetContextGPUIDAMD = NULL;
+    if (FindProc("glXGetContextGPUIDAMD", aGetContextGPUIDAMD)) {
+      std::cout << Prefix() << "GLX_AMD_gpu_association supported & glXGetContextGPUIDAMD proc found\n";
+      unsigned int currentAmdId = aGetContextGPUIDAMD((GLXContext)myRendCtx);
+      std::cout << Prefix() << "GPU ID for GLX_AMD_gpu_association for current context : " << currentAmdId << "\n";
+    }
   }
 }
 
