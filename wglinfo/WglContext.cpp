@@ -689,7 +689,8 @@ void WglContext::PrintAdditionalInfos()
             else
             {
               std::cout << " * Fastest GPUs : ";
-              for (int i = 0; i < std::max(fastestGpuSize, arraySize); i++) {
+              // CF https://stackoverflow.com/a/2789509
+              for (int i = 0; i < (std::max)(fastestGpuSize, arraySize); i++) {
                 std::cout << amdFastestGpus[i];
               }
               std::cout << "\n";
@@ -711,7 +712,7 @@ void WglContext::PrintAdditionalInfos()
             else
             {
               std::cout << " * Vendor : ";
-              for (int i = 0; i < std::max(vendorSize, stringSize); i++) {
+              for (int i = 0; i < (std::max)(vendorSize, stringSize); i++) {
                 std::cout << (char) amdGpuVendor[i];
               }
               std::cout << "\n";
@@ -728,7 +729,7 @@ void WglContext::PrintAdditionalInfos()
             else
             {
               std::cout << " * GPU Name : ";
-              for (int i = 0; i < std::max(rendererSize, stringSize); i++) {
+              for (int i = 0; i < (std::max)(rendererSize, stringSize); i++) {
                 std::cout << (char) amdRenderer[i];
               }
               std::cout << "\n";
@@ -745,7 +746,7 @@ void WglContext::PrintAdditionalInfos()
             else
             {
               std::cout << " * OpenGL version : ";
-              for (int i = 0; i < std::max(openGLVersionSize, stringSize); i++) {
+              for (int i = 0; i < (std::max)(openGLVersionSize, stringSize); i++) {
                 std::cout << (char) amdOpenGLVersion[i];
               }
               std::cout << "\n";
