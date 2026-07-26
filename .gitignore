@@ -21,6 +21,7 @@
 *.dll
 bin/
 build/
+build-windows/
 work/
 x64-Release
 Win32-Release
