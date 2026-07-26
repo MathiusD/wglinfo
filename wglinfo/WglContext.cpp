@@ -638,4 +638,42 @@ void WglContext::PrintVisuals(bool theIsVerbose)
     VisualInfo::PrintTableHeader(false);
 }
 
+
+void WglContext::PrintAdditionalInfos()
+{
+  BaseGlContext::PrintAdditionalInfos();
+  
+  const char* aWglExts = NULL;
+  wglGetExtensionsStringARB_t wglGetExtensionsStringARB = NULL;
+  if (FindProc("wglGetExtensionsStringARB", wglGetExtensionsStringARB))
+    aWglExts = wglGetExtensionsStringARB(wglGetCurrentDC());
+
+  typedef unsigned int (*wglGetGPUIDsAMD_t) (unsigned int maxCount, unsigned int *ids);
+  wglGetGPUIDsAMD_t aGetGPUIDsAMDProc = NULL;
+  if (aWglExts != NULL && hasExtension(aWglExts, "WGL_AMD_gpu_association")
+   && FindProc("wglGetGPUIDsAMD", aGetGPUIDsAMDProc))
+  {
+    std::cout << Prefix() << "WGL_AMD_gpu_association supported & wglGetGPUIDsAMD proc found\n";
+    unsigned int gpuCount = aGetGPUIDsAMDProc(0, NULL);
+    if (gpuCount == 0)
+    {
+      std::cout << Prefix() << "Error occured during fetch of GPU count by AMD_gpu_association\n";
+    }
+    else
+    {
+      std::cout << Prefix() << "GPU count reported by AMD_gpu_association: " << gpuCount << " (Related ids : ";
+      unsigned int* ids = new unsigned int[gpuCount];
+      int count = aGetGPUIDsAMDProc(gpuCount, ids);
+      for (int i = 0; i < count; i++) {
+        if (i > 0) {
+          std::cout << ", ";
+        }
+        unsigned int id = ids[i];
+        std::cout << id;
+      }
+      std::cout << ")\n";
+    }
+  }
+}
+
 #endif

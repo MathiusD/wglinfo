@@ -72,6 +72,8 @@ public:
   //!                                         icd (standalone driver))
   virtual void PrintVisuals(bool theIsVerbose) override;
 
+  virtual void PrintAdditionalInfos() override;
+
 public:
 
   //! glGetError() wrapper.
