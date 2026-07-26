@@ -427,8 +427,8 @@ void WglInfo::printHelp(const char* theName, bool theIsVersion)
     std::cout <<
       "Usage: " << aName << " [-v] [-h] [--platform {" << aPlatforms << "}]=*\n"
       "               [--api {GL|GLES}]=* [--profile {core|compat|soft}]=*\n"
-      "               [--first] [--gpumemory]\n"
-      "               [--novisuals] [--noextensions] [--norenderer] [--noplatform] [--noadditionals]\n"
+      "               [--first] [--platform] [--renderer] [--gpumemory] [--extensions] [--limits] [--visuals]\n"
+      "               [--novisuals] [--noextensions] [--norenderer] [--noplatform] [--nolimits] [--noadditionals]\n"
       "  -B              Brief output, print only the basics.\n"
       "  -v              Print visuals info in verbose form.\n"
       "  -h              This information.\n"
@@ -439,10 +439,16 @@ void WglInfo::printHelp(const char* theName, bool theIsVersion)
       "  --profile       Profile to create OpenGL context;\n"
       "                  by default several main profiles will be evaluated.\n"
       "  --first         Print only first context.\n"
+      "  --platform      Print only platform (EGL|WGL|GLX|CGL etc.) info (suppresses all other info).\n"
+      "  --renderer      Print only renderer info (suppresses all other info).\n"
       "  --gpumemory     Print only GPU memory info (suppresses all other info).\n"
+      "  --extensions    List only extensions (suppresses all other info).\n"
+      "  --limits        List only limits (suppresses all other info).\n"
+      "  --visuals       List only visuals (suppresses all other info).\n"
       "  --noplatform    Do not print platform (EGL|WGL|GLX|CGL etc.) info.\n"
       "  --norenderer    Do not print renderer info.\n"
       "  --noextensions  Do not list extensions.\n"
+      "  --nolimits      Do not list limits.\n"
       "  --novisuals     Do not list visuals, same as -B.\n"
       "  --noadditionals Do not list additionals infos, same as -B.\n";
     }
