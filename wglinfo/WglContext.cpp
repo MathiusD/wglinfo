@@ -672,6 +672,160 @@ void WglContext::PrintAdditionalInfos()
         std::cout << id;
       }
       std::cout << ")\n";
+
+      typedef INT(WINAPI *wglGetGPUInfoAMD_t)(UINT theId, INT theProperty, GLenum theDataType, UINT theSize, void* theData);
+      wglGetGPUInfoAMD_t aGetGPUInfoAMD = NULL;
+      if (FindProc("wglGetGPUInfoAMD", aGetGPUInfoAMD)) {
+        std::cout << Prefix() << "WGL_AMD_gpu_association supported & wglGetGPUInfoAMD proc found\n";
+        if (count >= 1) {
+          {
+            int arraySize = count;
+            GLuint* amdFastestGpus = new GLuint[count];
+            int fastestGpuSize = aGetGPUInfoAMD(ids[0], 0x21A2 /* WGL_GPU_FASTEST_TARGET_GPUS_AMD */, GL_UNSIGNED_INT, sizeof(amdFastestGpus), &amdFastestGpus);
+            if (fastestGpuSize <= 0)
+            {
+              std::cout << " * " << "Unable to retrieve fastest gpus list\n";
+            }
+            else
+            {
+              std::cout << " * Fastest GPUs : ";
+              for (int i = 0; i < std::max(fastestGpuSize, arraySize); i++) {
+                std::cout << amdFastestGpus[i];
+              }
+              std::cout << "\n";
+            }
+          }
+        }
+        for (int i = 0; i < count; i++) {
+          unsigned int id = ids[i];
+          std::cout << Prefix() << "For gpu (amd id : " << id << ") :\n";
+
+          {
+            int stringSize = 256;
+            GLuint* amdGpuVendor = new GLuint[stringSize];
+            int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* WGL_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, sizeof(amdGpuVendor), &amdGpuVendor);
+            if (vendorSize <= 0)
+            {
+              std::cout << " * " << "Unable to retrieve vendor\n";
+            }
+            else
+            {
+              std::cout << " * Vendor : ";
+              for (int i = 0; i < std::max(vendorSize, stringSize); i++) {
+                std::cout << (char) amdGpuVendor[i];
+              }
+              std::cout << "\n";
+            }
+          }
+          {
+            int stringSize = 256;
+            GLuint* amdRenderer = new GLuint[stringSize];
+            int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* WGL_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, sizeof(amdRenderer), &amdRenderer);
+            if (rendererSize <= 0)
+            {
+              std::cout << " * " << "Unable to retrieve gpu name\n";
+            }
+            else
+            {
+              std::cout << " * GPU Name : ";
+              for (int i = 0; i < std::max(rendererSize, stringSize); i++) {
+                std::cout << (char) amdRenderer[i];
+              }
+              std::cout << "\n";
+            }
+          }
+          {
+            int stringSize = 256;
+            GLuint* amdOpenGLVersion = new GLuint[stringSize];
+            int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* WGL_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, sizeof(amdOpenGLVersion), &amdOpenGLVersion);
+            if (openGLVersionSize <= 0)
+            {
+              std::cout << " * " << "Unable to retrieve opengl version\n";
+            }
+            else
+            {
+              std::cout << " * OpenGL version : ";
+              for (int i = 0; i < std::max(openGLVersionSize, stringSize); i++) {
+                std::cout << (char) amdOpenGLVersion[i];
+              }
+              std::cout << "\n";
+            }
+          }
+          {
+            GLuint amdMemory = 0;
+            bool memFailed = aGetGPUInfoAMD(id, 0x21A3 /* WGL_GPU_RAM_AMD */, GL_UNSIGNED_INT, sizeof(amdMemory), &amdMemory) > 0;
+            if (!memFailed)
+            {
+              std::cout << " * " << amdMemory << " MiB\n";
+            }
+            else
+            {
+              std::cout << " * " << "Unable to retrieve memory\n";
+            }
+          }
+          {
+            GLuint amdClock = 0;
+            bool clockFailed = aGetGPUInfoAMD(id, 0x21A3 /* WGL_GPU_CLOCK_AMD */, GL_UNSIGNED_INT, sizeof(amdClock), &amdClock) > 0;
+            if (!clockFailed)
+            {
+              std::cout << " * " << amdClock << " Mhz\n";
+            }
+            else
+            {
+              std::cout << " * " << "Unable to retrieve clock frequency\n";
+            }
+          }
+          {
+            GLuint amdPipes = 0;
+            bool pipesFailed = aGetGPUInfoAMD(id, 0x21A5 /* WGL_GPU_NUM_PIPES_AMD */, GL_UNSIGNED_INT, sizeof(amdPipes), &amdPipes) > 0;
+            if (!pipesFailed)
+            {
+              std::cout << " * " << amdPipes << " 3D pipes\n";
+            }
+            else
+            {
+              std::cout << " * " << "Unable to retrieve number of 3D pipes\n";
+            }
+          }
+          {
+            GLuint amdNumSimd = 0;
+            bool numSimdFailed = aGetGPUInfoAMD(id, 0x21A6 /* WGL_GPU_NUM_SIMD_AMD */, GL_UNSIGNED_INT, sizeof(amdNumSimd), &amdNumSimd) > 0;
+            if (!numSimdFailed)
+            {
+              std::cout << " * " << amdNumSimd << " SIMD ALU units in each shader pipes\n";
+            }
+            else
+            {
+              std::cout << " * " << "Unable to retrieve number of SIMD ALU units in each shader pipes\n";
+            }
+          }
+          {
+            GLuint amdNumRB = 0;
+            bool numRBFailed = aGetGPUInfoAMD(id, 0x21A7 /* WGL_GPU_NUM_RB_AMD */, GL_UNSIGNED_INT, sizeof(amdNumRB), &amdNumRB) > 0;
+            if (!numRBFailed)
+            {
+              std::cout << " * " << amdNumRB << " render backends\n";
+            }
+            else
+            {
+              std::cout << " * " << "Unable to retrieve number of render backends\n";
+            }
+          }
+          {
+            GLuint amdNumSPI = 0;
+            bool numSPIFailed = aGetGPUInfoAMD(id, 0x21A8 /* WGL_GPU_NUM_SPI_AMD */, GL_UNSIGNED_INT, sizeof(amdNumSPI), &amdNumSPI) > 0;
+            if (!numSPIFailed)
+            {
+              std::cout << " * " << amdNumSPI << " shader parameter interpolaters\n";
+            }
+            else
+            {
+              std::cout << " * " << "Unable to retrieve number of shader parameter interpolaters\n";
+            }
+          }
+          std::cout << "\n";
+        }
+      }
     }
   }
 }
