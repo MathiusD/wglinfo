@@ -427,7 +427,7 @@ void WglInfo::printHelp(const char* theName, bool theIsVersion)
     std::cout <<
       "Usage: " << aName << " [-v] [-h] [--platform {" << aPlatforms << "}]=*\n"
       "               [--api {GL|GLES}]=* [--profile {core|compat|soft}]=*\n"
-      "               [--first] [--platform] [--renderer] [--gpumemory] [--extensions] [--limits] [--visuals]\n"
+      "               [--first] [--platform] [--renderer] [--gpumemory] [--extensions] [--limits] [--visuals] [--additionals]\n"
       "               [--novisuals] [--noextensions] [--norenderer] [--noplatform] [--nolimits] [--noadditionals]\n"
       "  -B              Brief output, print only the basics.\n"
       "  -v              Print visuals info in verbose form.\n"
@@ -445,12 +445,13 @@ void WglInfo::printHelp(const char* theName, bool theIsVersion)
       "  --extensions    List only extensions (suppresses all other info).\n"
       "  --limits        List only limits (suppresses all other info).\n"
       "  --visuals       List only visuals (suppresses all other info).\n"
+      "  --additionals   Print only additionals infos (suppresses all other info).\n"
       "  --noplatform    Do not print platform (EGL|WGL|GLX|CGL etc.) info.\n"
       "  --norenderer    Do not print renderer info.\n"
       "  --noextensions  Do not list extensions.\n"
       "  --nolimits      Do not list limits.\n"
       "  --novisuals     Do not list visuals, same as -B.\n"
-      "  --noadditionals Do not list additionals infos, same as -B.\n";
+      "  --noadditionals Do not print additionals infos, same as -B.\n";
     }
 
     std::cout << "This wglinfo tool variation has been created by Kirill Gavrilov Tartynskih <kirill@sview.ru>\n";
