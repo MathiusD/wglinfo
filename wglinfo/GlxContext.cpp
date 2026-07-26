@@ -444,81 +444,83 @@ void GlxContext::PrintAdditionalInfos()
       glXGetGPUInfoAMD_t aGetGPUInfoAMD = NULL;
       if (FindProc("glXGetGPUInfoAMD", aGetGPUInfoAMD)) {
         std::cout << Prefix() << "GLX_AMD_gpu_association supported & glXGetGPUInfoAMD proc found\n";
-        // TODO mfery check
-        // if (count >= 1) {
-        //   {
-        //     int arraySize = count;
-        //     GLuint* amdFastestGpus = new GLuint[count];
-        //     int fastestGpuSize = aGetGPUInfoAMD(ids[0], 0x21A2 /* GLX_GPU_FASTEST_TARGET_GPUS_AMD */, GL_UNSIGNED_INT, sizeof(amdFastestGpus), &amdFastestGpus);
-        //     if (fastestGpuSize <= 0)
-        //     {
-        //       std::cout << " * " << "Unable to retrieve fastest gpus list\n";
-        //     }
-        //     else
-        //     {
-        //       std::cout << " * Fastest GPUs : ";
-        //       for (int i = 0; i < std::max(fastestGpuSize, arraySize); i++) {
-        //         std::cout << amdFastestGpus[i];
-        //       }
-        //       std::cout << "\n";
-        //     }
-        //   }
-        // }
+        if (count >= 1) {
+          {
+            int arraySize = count;
+            GLuint* amdFastestGpus = new GLuint[count];
+            int fastestGpuSize = aGetGPUInfoAMD(ids[0], 0x21A2 /* GLX_GPU_FASTEST_TARGET_GPUS_AMD */, GL_UNSIGNED_INT, count, &amdFastestGpus);
+            if (fastestGpuSize <= 0)
+            {
+              std::cout << " * " << "Unable to retrieve fastest gpus list (result:" << fastestGpuSize << ")\n";
+            }
+            else
+            {
+              std::cout << " * Fastest GPUs : ";
+              for (int i = 0; i < std::max(fastestGpuSize, arraySize); i++) {
+                if (i > 0) {
+                  std::cout << ", ";
+                }
+                std::cout << amdFastestGpus[i];
+              }
+              std::cout << "\n";
+            }
+          }
+        }
         for (int i = 0; i < count; i++) {
           unsigned int id = ids[i];
           std::cout << Prefix() << "For gpu (amd id : " << id << ") :\n";
 
-          // {
-          //   int stringSize = 256;
-          //   GLuint* amdGpuVendor = new GLuint[stringSize];
-          //   int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* GLX_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, sizeof(amdGpuVendor), &amdGpuVendor);
-          //   if (vendorSize <= 0)
-          //   {
-          //     std::cout << " * " << "Unable to retrieve vendor\n";
-          //   }
-          //   else
-          //   {
-          //     std::cout << " * Vendor : ";
-          //     for (int i = 0; i < std::max(vendorSize, stringSize); i++) {
-          //       std::cout << (char) amdGpuVendor[i];
-          //     }
-          //     std::cout << "\n";
-          //   }
-          // }
-          // {
-          //   int stringSize = 256;
-          //   GLuint* amdRenderer = new GLuint[stringSize];
-          //   int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* GLX_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, sizeof(amdRenderer), &amdRenderer);
-          //   if (rendererSize <= 0)
-          //   {
-          //     std::cout << " * " << "Unable to retrieve gpu name\n";
-          //   }
-          //   else
-          //   {
-          //     std::cout << " * GPU Name : ";
-          //     for (int i = 0; i < std::max(rendererSize, stringSize); i++) {
-          //       std::cout << (char) amdRenderer[i];
-          //     }
-          //     std::cout << "\n";
-          //   }
-          // }
-          // {
-          //   int stringSize = 256;
-          //   GLuint* amdOpenGLVersion = new GLuint[stringSize];
-          //   int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* GLX_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, sizeof(amdOpenGLVersion), &amdOpenGLVersion);
-          //   if (openGLVersionSize <= 0)
-          //   {
-          //     std::cout << " * " << "Unable to retrieve opengl version\n";
-          //   }
-          //   else
-          //   {
-          //     std::cout << " * OpenGL version : ";
-          //     for (int i = 0; i < std::max(openGLVersionSize, stringSize); i++) {
-          //       std::cout << (char) amdOpenGLVersion[i];
-          //     }
-          //     std::cout << "\n";
-          //   }
-          // }
+          {
+            int stringSize = aGetGPUInfoAMD(id, 0x1F00 /* GLX_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, 0, NULL);
+            if (stringSize <= 0)
+            {
+              std::cout << " * " << "Unable to retrieve vendor (result:" << stringSize << ")\n";
+            }
+            else
+            {
+              GLuint* amdGpuVendor = new GLuint[stringSize];
+              int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* GLX_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, stringSize, &amdGpuVendor);
+              std::cout << " * Vendor : ";
+              for (int i = 0; i < std::max(vendorSize, stringSize); i++) {
+                std::cout << (char) amdGpuVendor[i];
+              }
+              std::cout << "\n";
+            }
+          }
+          {
+            int stringSize = aGetGPUInfoAMD(id, 0x1F01 /* GLX_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, 0, NULL);
+            if (stringSize <= 0)
+            {
+              std::cout << " * " << "Unable to retrieve gpu name (result:" << stringSize << ")\n";
+            }
+            else
+            {
+              GLuint* amdRenderer = new GLuint[stringSize];
+              int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* GLX_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, stringSize, &amdRenderer);
+              std::cout << " * GPU Name : ";
+              for (int i = 0; i < std::max(rendererSize, stringSize); i++) {
+                std::cout << (char) amdRenderer[i];
+              }
+              std::cout << "\n";
+            }
+          }
+          {
+            int stringSize = aGetGPUInfoAMD(id, 0x1F02 /* GLX_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, 0, NULL);
+            if (stringSize <= 0)
+            {
+              std::cout << " * " << "Unable to retrieve opengl version (result:" << stringSize << ")\n";
+            }
+            else
+            {
+              GLuint* amdOpenGLVersion = new GLuint[stringSize];
+              int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* GLX_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, stringSize, &amdOpenGLVersion);
+              std::cout << " * OpenGL version : ";
+              for (int i = 0; i < std::max(openGLVersionSize, stringSize); i++) {
+                std::cout << (char) amdOpenGLVersion[i];
+              }
+              std::cout << "\n";
+            }
+          }
           {
             GLuint amdMemory = 0;
             int memResult = aGetGPUInfoAMD(id, 0x21A3 /* GLX_GPU_RAM_AMD */, GL_UNSIGNED_INT, sizeof(amdMemory), &amdMemory);
