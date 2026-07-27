@@ -772,7 +772,7 @@ void WglContext::PrintAdditionalInfos()
           }
           {
             GLuint amdClock = 0;
-            int clockResult = aGetGPUInfoAMD(id, 0x21A3 /* WGL_GPU_CLOCK_AMD */, GL_UNSIGNED_INT, sizeof(amdClock), &amdClock);
+            int clockResult = aGetGPUInfoAMD(id, 0x21A4 /* WGL_GPU_CLOCK_AMD */, GL_UNSIGNED_INT, sizeof(amdClock), &amdClock);
             if (clockResult > 0)
             {
               std::cout << " * " << amdClock << " Mhz\n";
