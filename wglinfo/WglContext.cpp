@@ -681,7 +681,7 @@ void WglContext::PrintAdditionalInfos()
           {
             int arraySize = count;
             GLuint* amdFastestGpus = new GLuint[count];
-            int fastestGpuSize = aGetGPUInfoAMD(ids[0], 0x21A2 /* WGL_GPU_FASTEST_TARGET_GPUS_AMD */, GL_UNSIGNED_INT, count, &amdFastestGpus);
+            int fastestGpuSize = aGetGPUInfoAMD(ids[0], 0x21A2 /* WGL_GPU_FASTEST_TARGET_GPUS_AMD */, GL_UNSIGNED_INT, count, amdFastestGpus);
             if (fastestGpuSize <= 0)
             {
               std::cout << " * " << "Unable to retrieve fastest gpus list (result:" << fastestGpuSize << ")\n";
@@ -713,7 +713,7 @@ void WglContext::PrintAdditionalInfos()
             else
             {
               GLuint* amdGpuVendor = new GLuint[stringSize];
-              int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* WGL_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, stringSize, &amdGpuVendor);
+              int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* WGL_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, stringSize, amdGpuVendor);
               std::cout << " * Vendor : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
               for (int i = 0; i < (std::min)(vendorSize, stringSize); i++) {
@@ -731,7 +731,7 @@ void WglContext::PrintAdditionalInfos()
             else
             {
               GLuint* amdRenderer = new GLuint[stringSize];
-              int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* WGL_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, stringSize, &amdRenderer);
+              int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* WGL_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, stringSize, amdRenderer);
               std::cout << " * GPU Name : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
               for (int i = 0; i < (std::min)(rendererSize, stringSize); i++) {
@@ -749,7 +749,7 @@ void WglContext::PrintAdditionalInfos()
             else
             {
               GLuint* amdOpenGLVersion = new GLuint[stringSize];
-              int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* WGL_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, stringSize, &amdOpenGLVersion);
+              int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* WGL_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, stringSize, amdOpenGLVersion);
               std::cout << " * OpenGL version : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
               for (int i = 0; i < (std::min)(openGLVersionSize, stringSize); i++) {
