@@ -690,7 +690,7 @@ void WglContext::PrintAdditionalInfos()
             {
               std::cout << " * Fastest GPUs : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
-              for (int i = 0; i < (std::max)(fastestGpuSize, arraySize); i++) {
+              for (int i = 0; i < (std::min)(fastestGpuSize, arraySize); i++) {
                 if (i > 0) {
                   std::cout << ", ";
                 }
@@ -716,7 +716,7 @@ void WglContext::PrintAdditionalInfos()
               int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* WGL_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, stringSize, &amdGpuVendor);
               std::cout << " * Vendor : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
-              for (int i = 0; i < (std::max)(vendorSize, stringSize); i++) {
+              for (int i = 0; i < (std::min)(vendorSize, stringSize); i++) {
                 std::cout << (char) amdGpuVendor[i];
               }
               std::cout << "\n";
@@ -734,7 +734,7 @@ void WglContext::PrintAdditionalInfos()
               int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* WGL_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, stringSize, &amdRenderer);
               std::cout << " * GPU Name : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
-              for (int i = 0; i < (std::max)(rendererSize, stringSize); i++) {
+              for (int i = 0; i < (std::min)(rendererSize, stringSize); i++) {
                 std::cout << (char) amdRenderer[i];
               }
               std::cout << "\n";
@@ -752,7 +752,7 @@ void WglContext::PrintAdditionalInfos()
               int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* WGL_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, stringSize, &amdOpenGLVersion);
               std::cout << " * OpenGL version : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
-              for (int i = 0; i < (std::max)(openGLVersionSize, stringSize); i++) {
+              for (int i = 0; i < (std::min)(openGLVersionSize, stringSize); i++) {
                 std::cout << (char) amdOpenGLVersion[i];
               }
               std::cout << "\n";
