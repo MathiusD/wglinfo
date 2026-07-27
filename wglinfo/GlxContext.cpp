@@ -456,7 +456,7 @@ void GlxContext::PrintAdditionalInfos()
             else
             {
               std::cout << " * Fastest GPUs : ";
-              for (int i = 0; i < std::max(fastestGpuSize, arraySize); i++) {
+              for (int i = 0; i < std::min(fastestGpuSize, arraySize); i++) {
                 if (i > 0) {
                   std::cout << ", ";
                 }
@@ -481,7 +481,7 @@ void GlxContext::PrintAdditionalInfos()
               GLuint* amdGpuVendor = new GLuint[stringSize];
               int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* GLX_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, stringSize, amdGpuVendor);
               std::cout << " * Vendor : ";
-              for (int i = 0; i < std::max(vendorSize, stringSize); i++) {
+              for (int i = 0; i < std::min(vendorSize, stringSize); i++) {
                 std::cout << (char) amdGpuVendor[i];
               }
               std::cout << "\n";
@@ -498,7 +498,7 @@ void GlxContext::PrintAdditionalInfos()
               GLuint* amdRenderer = new GLuint[stringSize];
               int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* GLX_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, stringSize, amdRenderer);
               std::cout << " * GPU Name : ";
-              for (int i = 0; i < std::max(rendererSize, stringSize); i++) {
+              for (int i = 0; i < std::min(rendererSize, stringSize); i++) {
                 std::cout << (char) amdRenderer[i];
               }
               std::cout << "\n";
@@ -515,7 +515,7 @@ void GlxContext::PrintAdditionalInfos()
               GLuint* amdOpenGLVersion = new GLuint[stringSize];
               int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* GLX_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, stringSize, amdOpenGLVersion);
               std::cout << " * OpenGL version : ";
-              for (int i = 0; i < std::max(openGLVersionSize, stringSize); i++) {
+              for (int i = 0; i < std::min(openGLVersionSize, stringSize); i++) {
                 std::cout << (char) amdOpenGLVersion[i];
               }
               std::cout << "\n";
