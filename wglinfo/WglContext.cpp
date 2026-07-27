@@ -705,55 +705,58 @@ void WglContext::PrintAdditionalInfos()
           std::cout << Prefix() << "For gpu (amd id : " << id << ") :\n";
 
           {
-            int stringSize = aGetGPUInfoAMD(id, 0x1F00 /* WGL_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, 0, NULL);
-            if (stringSize <= 0)
+            int stringSize = 256;
+            char* amdGpuVendor = new char[stringSize];
+            int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* WGL_GPU_VENDOR_AMD */, GL_UNSIGNED_BYTE, stringSize, amdGpuVendor);
+            if (vendorSize <= 0)
             {
-              std::cout << " * " << "Unable to retrieve vendor (result:" << stringSize << ")\n";
+              std::cout << " * " << "Unable to retrieve vendor (result:" << vendorSize << ")\n";
             }
             else
             {
               GLuint* amdGpuVendor = new GLuint[stringSize];
-              int vendorSize = aGetGPUInfoAMD(id, 0x1F00 /* WGL_GPU_VENDOR_AMD */, GL_UNSIGNED_INT, stringSize, amdGpuVendor);
               std::cout << " * Vendor : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
               for (int i = 0; i < (std::min)(vendorSize, stringSize); i++) {
-                std::cout << (char) amdGpuVendor[i];
+                std::cout << amdGpuVendor[i];
               }
               std::cout << "\n";
             }
           }
           {
-            int stringSize = aGetGPUInfoAMD(id, 0x1F01 /* WGL_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, 0, NULL);
-            if (stringSize <= 0)
+            int stringSize = 256;
+            char* amdRenderer = new char[stringSize];
+            int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* WGL_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_BYTE, stringSize, amdRenderer);
+            if (rendererSize <= 0)
             {
-              std::cout << " * " << "Unable to retrieve gpu name (result:" << stringSize << ")\n";
+              std::cout << " * " << "Unable to retrieve gpu name (result:" << rendererSize << ")\n";
             }
             else
             {
               GLuint* amdRenderer = new GLuint[stringSize];
-              int rendererSize = aGetGPUInfoAMD(id, 0x1F01 /* WGL_GPU_RENDERER_STRING_AMD */, GL_UNSIGNED_INT, stringSize, amdRenderer);
               std::cout << " * GPU Name : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
               for (int i = 0; i < (std::min)(rendererSize, stringSize); i++) {
-                std::cout << (char) amdRenderer[i];
+                std::cout << amdRenderer[i];
               }
               std::cout << "\n";
             }
           }
           {
-            int stringSize = aGetGPUInfoAMD(id, 0x1F02 /* WGL_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, 0, NULL);
-            if (stringSize <= 0)
+            int stringSize = 256;
+            char* amdOpenGLVersion = new char[stringSize];
+            int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* WGL_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_BYTE, stringSize, amdOpenGLVersion);
+            if (openGLVersionSize <= 0)
             {
-              std::cout << " * " << "Unable to retrieve opengl version (result:" << stringSize << ")\n";
+              std::cout << " * " << "Unable to retrieve opengl version (result:" << openGLVersionSize << ")\n";
             }
             else
             {
               GLuint* amdOpenGLVersion = new GLuint[stringSize];
-              int openGLVersionSize = aGetGPUInfoAMD(id, 0x1F02 /* WGL_GPU_OPENGL_VERSION_STRING_AMD */, GL_UNSIGNED_INT, stringSize, amdOpenGLVersion);
               std::cout << " * OpenGL version : ";
               // For msvc compat, cf here : https://stackoverflow.com/a/2789509
               for (int i = 0; i < (std::min)(openGLVersionSize, stringSize); i++) {
-                std::cout << (char) amdOpenGLVersion[i];
+                std::cout << amdOpenGLVersion[i];
               }
               std::cout << "\n";
             }
